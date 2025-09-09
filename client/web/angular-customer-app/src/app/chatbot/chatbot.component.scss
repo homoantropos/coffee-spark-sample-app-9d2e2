@@ -1,0 +1,575 @@
+/**
+ * Copyright 2025 Google LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+@use "sass:color";
+
+$primary-font-color: #333;
+$secondary-font-color: #555;
+$background-color-page: #fcf8f8;
+$border-color-light: #e0e0e0;
+$tag-special-bg: #fff0b2;
+$tag-bot-bg: #d1c4e9;
+$icon-color: #5f6368;
+
+$barista-bubble-bg: #fdadee;
+$barista-icon-text-color: #6d4c41;
+$barista-icon-bg-start: #ffd977;
+$barista-icon-bg-end: #ffb450;
+
+$user-bubble-bg: white;
+$user-bubble-border: #b0bec5;
+$user-bubble-text-color: #37474f;
+
+$accent-color-barista: #e8dff5;
+$accent-color-user: #f0f0f0;
+
+$input-bar-bg: white;
+$input-field-border-color: #cdcdcd;
+$input-field-placeholder-color: #8b8b8b;
+
+$add-btn-bg: #f0f0f0;
+$add-btn-icon-color: #757575;
+
+$send-btn-bg: #ffd152;
+$send-btn-icon-color: #424242;
+
+:host {
+  display: block;
+  height: 100%;
+  background-color: $background-color-page;
+  font-family: "Roboto", "Helvetica Neue", sans-serif;
+}
+
+.coffee-chat-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+}
+
+.centered-chat-column {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 900px;
+  height: 100%;
+}
+
+.order-bar {
+  padding: 12px 15px;
+  background-color: $background-color-page;
+  color: #434748;
+  width: 100%;
+  box-sizing: border-box;
+
+  .order-display-container {
+    display: flex;
+    align-items: center;
+    background-color: color.adjust($background-color-page, $lightness: -5%);
+    border: 1px solid $border-color-light;
+    border-radius: 24px;
+    padding: 6px 16px;
+    position: relative;
+
+    .order-label {
+      font-size: 0.75em;
+      color: $secondary-font-color;
+      position: absolute;
+      top: -10px;
+      left: 15px;
+      background-color: color.adjust($background-color-page, $lightness: -5%);
+      padding: 0 4px;
+      font-weight: 500;
+    }
+
+    .order-text {
+      flex-grow: 1;
+      font-size: 1em;
+      padding: 8px 0;
+      min-height: 24px;
+      line-height: 1.5;
+    }
+  }
+}
+
+.chat-content-area {
+  flex: 1 0 0;
+  display: flex;
+  flex-direction: column;
+  padding: 16px 24px 0;
+  width: 100%;
+  box-sizing: border-box;
+  overflow-y: scroll;
+}
+
+.messages {
+  display: flex;
+  flex-direction: column-reverse;
+  padding-right: 8px;
+  margin-bottom: 16px;
+
+  .message {
+    display: flex;
+    align-items: flex-end;
+    margin-bottom: 12px;
+    max-width: 75%;
+
+    .message-icon-container {
+      margin-right: 10px;
+    }
+
+    .message-text-container {
+      padding: 10px 16px;
+      line-height: 1.5;
+      color: $primary-font-color;
+      position: relative;
+      img {
+        max-height: 250px;
+        object-fit: cover;
+        display: block;
+      }
+    }
+    &.barista {
+      align-self: flex-start;
+      .message-icon-container {
+        display: flex;
+        .barista-icon {
+          font-size: 22px;
+          width: 44px;
+          height: 44px;
+          color: $barista-icon-text-color;
+          background: linear-gradient(
+            135deg,
+            $barista-icon-bg-start,
+            $barista-icon-bg-end
+          );
+          border-radius: 12px;
+          padding: 0;
+          box-sizing: border-box;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+      }
+      .message-text-container {
+        background-color: $barista-bubble-bg;
+        border-radius: 18px 18px 18px 6px;
+        img {
+          max-width: 100%;
+          border-radius: 10px;
+          margin-top: 8px;
+        }
+      }
+    }
+
+    &.user {
+      align-self: flex-end;
+      margin-left: auto;
+      flex-direction: row-reverse;
+      .message-icon-container {
+        display: none;
+        margin-left: 10px;
+        margin-right: 0;
+      }
+      .message-text-container {
+        background-color: $background-color-page;
+        border: 1.5px solid #747878;
+        color: $user-bubble-text-color;
+        border-radius: 18px 6px 18px 18px;
+        text-align: center;
+        img {
+          max-width: 100%;
+          border-radius: 10px;
+          margin-top: 8px;
+          max-height: 250px;
+          object-fit: cover;
+          display: block;
+          margin-left: auto;
+          margin-right: auto;
+        }
+      }
+    }
+
+    .typing-indicator {
+      display: flex;
+      align-items: center;
+      padding: 12px;
+    }
+    .typing {
+      display: inline-block;
+      width: 0.7rem;
+      height: 0.7rem;
+      margin-right: 0.3rem;
+      background: #906090;
+      border-radius: 50%;
+      animation: typing 1.2s infinite ease-in-out;
+      &:nth-child(1) {
+        animation-delay: 0s;
+      }
+      &:nth-child(2) {
+        animation-delay: 0.2s;
+      }
+      &:nth-child(3) {
+        animation-delay: 0.4s;
+        margin-right: 0;
+      }
+    }
+  }
+
+  .time-separator {
+    text-align: center;
+    font-size: 0.8em;
+    color: $secondary-font-color;
+    margin: 16px 0;
+    span {
+      background-color: color.adjust($background-color-page, $lightness: -5%);
+      padding: 4px 12px;
+      border-radius: 12px;
+    }
+  }
+}
+
+@keyframes typing {
+  0%,
+  100% {
+    opacity: 0.3;
+    transform: scale(0.7);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.suggestions-container {
+  padding: 8px 0;
+  margin-bottom: 8px;
+}
+
+.product-suggestions {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 16px;
+  overflow-x: auto;
+  padding-bottom: 12px;
+
+  .product-card {
+    display: flex;
+    align-items: center;
+    border-radius: 12px;
+    border-color: #c3c7c7;
+    border-width: 1px;
+    border-style: solid;
+    padding: 12px;
+    min-width: 220px;
+    cursor: pointer;
+    transition: box-shadow 0.2s ease;
+    &.special {
+      background-color: #ffdf99;
+    }
+    &.ai {
+      background-color: #ffd8f4;
+    }
+    &:hover {
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+    }
+
+    .product-card-text {
+      flex-grow: 1;
+      h3 {
+        font-size: 1.1em;
+        color: $primary-font-color;
+        margin: 0 0 4px 0;
+      }
+      .suggestion-tag {
+        font-size: 0.8em;
+        padding: 3px 8px;
+        border-radius: 8px;
+        color: color.adjust($primary-font-color, $lightness: -10%);
+        &.special {
+          background-color: $tag-special-bg;
+        }
+        &.bot {
+          background-color: $tag-bot-bg;
+        }
+      }
+    }
+    .product-image {
+      width: 60px;
+      height: 60px;
+      border-radius: 8px;
+      object-fit: cover;
+      margin-left: 12px;
+    }
+  }
+}
+
+.quick-replies {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: flex-start;
+
+  .quick-reply-chip {
+    border-radius: 20px !important;
+    border-color: $border-color-light;
+    color: $primary-font-color;
+    background-color: white;
+
+    mat-icon {
+      margin-right: 6px;
+      color: $icon-color;
+    }
+
+    &:hover {
+      background-color: color.adjust(white, $lightness: -5%);
+      border-color: color.adjust($border-color-light, $lightness: -5%);
+    }
+  }
+}
+
+.chat-input-bar {
+  display: flex;
+  align-items: center;
+  padding: 12px 14px;
+  background-color: $input-bar-bg;
+  border-radius: 28px;
+  margin: 0 16px 16px 16px;
+  width: calc(100% - 32px);
+  box-sizing: border-box;
+
+  .error-message {
+    background-color: #ffebee;
+    color: #c62828;
+    border: 1px solid #e57373;
+    border-radius: 8px;
+    padding: 8px 12px;
+    margin-bottom: 8px;
+    font-size: 0.9em;
+    text-wrap: auto;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  .image-preview-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding: 4px;
+    background-color: #f0f0f0;
+    border-radius: 6px;
+
+    .media-preview-in-bar {
+      max-height: 40px;
+      max-width: 60px;
+      border-radius: 4px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .remove-preview-button {
+      position: absolute;
+      top: -10px;
+      right: -10px;
+      width: 20px;
+      height: 20px;
+      background-color: rgba(0, 0, 0, 0.6);
+      color: white;
+      border-radius: 50%;
+
+      padding: 0 !important;
+      min-width: auto !important;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid white;
+
+      mat-icon {
+        font-size: 14px; // Smaller icon
+        width: 14px;
+        height: 14px;
+        line-height: 14px; // Vertically center icon
+      }
+
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.8);
+      }
+    }
+  }
+  .chat-input-field {
+    flex-grow: 1;
+    margin: 8px 10px 8px 8px;
+
+    .mat-mdc-form-field-flex {
+      padding-top: 0 !important;
+      align-items: center;
+    }
+    .mat-mdc-form-field-infix {
+      padding-top: 0 !important;
+      padding-bottom: 0 !important;
+      min-height: 48px;
+      display: flex;
+      align-items: center;
+    }
+    .mat-mdc-floating-label {
+      display: none !important;
+    }
+
+    .mat-mdc-text-field-wrapper {
+      height: 48px;
+      border-radius: 16px !important;
+      background-color: white;
+    }
+
+    .mdc-notched-outline {
+      &__leading,
+      &__notch,
+      &__trailing {
+        border-color: $input-field-border-color !important;
+        border-width: 1.5px !important;
+      }
+    }
+
+    input.mat-mdc-input-element {
+      padding: 12px 0px !important;
+      caret-color: $icon-color;
+      &::placeholder {
+        color: $input-field-placeholder-color;
+        font-weight: 400;
+      }
+    }
+  }
+
+  .action-button {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: none;
+
+    mat-icon {
+      font-size: 26px;
+      width: 26px;
+      height: 26px;
+    }
+
+    &:disabled {
+      opacity: 0.5;
+    }
+  }
+
+  .add-btn {
+    background-color: $add-btn-bg;
+    margin-right: 8px;
+    mat-icon {
+      color: $add-btn-icon-color;
+    }
+    &:hover:not(:disabled) {
+      background-color: color.adjust($add-btn-bg, $lightness: -5%);
+    }
+  }
+
+  .send-btn {
+    border-radius: 30%;
+    background-color: $send-btn-bg;
+    mat-icon {
+      color: $send-btn-icon-color;
+    }
+    &:hover:not(:disabled) {
+      background-color: color.adjust($send-btn-bg, $lightness: -10%);
+    }
+  }
+
+  .media-preview-small {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .order-bar {
+    padding: 10px 10px;
+    .order-display-container {
+      padding: 4px 12px;
+      .order-label {
+        left: 12px;
+        top: -9px;
+      }
+    }
+  }
+  .chat-content-area {
+    padding: 12px 16px 0;
+  }
+  .messages {
+    .message {
+      max-width: 85%;
+    }
+  }
+  .product-suggestions {
+    .product-card {
+      min-width: 240px;
+    }
+  }
+  .chat-input-bar {
+    padding: 8px 10px;
+    .chat-input-field {
+      margin: 0 6px;
+    }
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .messages {
+    .message {
+      .message-icon-container {
+        .barista-icon {
+          font-size: 30px;
+          width: 30px;
+          height: 30px;
+          padding: 4px;
+        }
+      }
+      .message-text-container {
+        padding: 10px 14px;
+        img {
+          max-height: 200px;
+        }
+      }
+    }
+  }
+  .product-suggestions {
+    gap: 10px;
+    .product-card {
+      flex-direction: column;
+      align-items: flex-start;
+      .product-image {
+        margin-left: 0;
+        margin-top: 8px;
+        width: 100%;
+        height: 100px;
+      }
+    }
+  }
+  .quick-replies {
+    justify-content: center;
+    .quick-reply-chip {
+      width: calc(50% - 5px);
+      text-align: center;
+      justify-content: center;
+    }
+  }
+}

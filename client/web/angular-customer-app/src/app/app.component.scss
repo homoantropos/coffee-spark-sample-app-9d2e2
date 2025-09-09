@@ -1,0 +1,134 @@
+/**
+ * Copyright 2025 Google LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+.wrapper {
+  display: grid;
+  grid-template:
+    "header" auto
+    "content" 1fr / 1fr;
+  height: 100vh;
+  background-color: #fcf8f8;
+}
+
+.custom-toolbar {
+  background-color: #fcf8f8 !important;
+  color: #333;
+  box-shadow: none;
+  height: auto;
+  min-height: 64px;
+  padding: 8px 12px;
+}
+
+.toolbar-title-container {
+  display: flex;
+  align-items: center;
+}
+
+.css-title-icon {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  background-color: #fbbc04;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.toolbar-title-container h1 {
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: #3c4043;
+  line-height: 1;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+.custom-toolbar button[mat-icon-button] mat-icon {
+  color: #5f6368;
+}
+
+.view-code-container {
+  width: 100%;
+  margin-right: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.view-code-banner {
+  border: 1px solid #ffc400;
+  border-radius: 24px;
+  font-family: "Google Sans Text", sans-serif;
+  font-size: 14px;
+  font-weight: 300;
+  display: flex;
+  align-items: center;
+  padding: 8px 12px;
+  margin: 0 4px;
+  flex-direction: column;
+}
+
+.view-code-banner .link {
+  margin-bottom: 8px;
+}
+
+@media (min-width: 640px) {
+  .view-code-banner {
+    flex-direction: row;
+  }
+
+  .view-code-banner .link {
+    margin-bottom: 0;
+    margin-right: 12px;
+  }
+
+  .view-code-banner span {
+    margin-right: 8px;
+  }
+}
+
+.create-workspace-link {
+  margin: 0.25rem;
+}
+
+@media (max-width: 800px) {
+  .custom-toolbar {
+    flex-wrap: wrap;
+  }
+
+  .toolbar-title-container {
+    order: 1;
+  }
+
+  .spacer {
+    order: 2;
+  }
+
+  .custom-toolbar button[mat-icon-button] {
+    order: 3;
+  }
+
+  .view-code-container {
+    order: 4;
+    flex-basis: 100%;
+    margin: 16px 0 4px 0;
+    width: auto;
+  }
+
+  .view-code-banner {
+    margin: 0 auto;
+  }
+}

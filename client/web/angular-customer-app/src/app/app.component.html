@@ -1,0 +1,51 @@
+<!--
+ Copyright 2025 Google LLC
+
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
+<div class="wrapper">
+  <mat-toolbar class="custom-toolbar">
+    <div class="toolbar-title-container">
+      <span class="css-title-icon"></span>
+      <h1>Coffee Spark</h1>
+    </div>
+    <!-- Icon and Title Section -->
+    @if (viewCodeLink) {
+    <div class="view-code-container">
+      <div class="view-code-banner">
+        <img src="app/assets/link.svg" class="link" />
+        <span>{{ viewCodeMessage }}</span>
+        <a
+          mat-button
+          class="create-workspace-link"
+          [href]="viewCodeLink"
+          target="_blank"
+          rel="noopener"
+          >Create Workspace</a
+        >
+      </div>
+    </div>
+    }
+    <span class="spacer"></span>
+    <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Toggle menu">
+      <mat-icon>more_vert</mat-icon>
+    </button>
+    <mat-menu #menu="matMenu">
+      <app-login />
+    </mat-menu>
+  </mat-toolbar>
+
+  <article>
+    <router-outlet></router-outlet>
+  </article>
+</div>

@@ -1,0 +1,147 @@
+<!-- 
+ Copyright 2025 Google LLC
+
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
+
+<div class="coffee-chat-page">
+  <div class="centered-chat-column">
+    <div class="order-bar">
+      <mat-expansion-panel
+        class="order-expansion-panel"
+        [expanded]="chatService.order().length > 0"
+      >
+        <mat-expansion-panel-header class="order-panel-header">
+          <mat-panel-title class="order-title-in-header">
+            Your order @if (chatService.order().length > 0) {
+            <span
+              >({{ chatService.order().length }} item{{
+                chatService.order().length === 1 ? "" : "s"
+              }})</span
+            >
+            }
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+
+        <div class="order-details-content">
+          <div class="order-text-actual">
+            {{ currentOrder() }}
+          </div>
+        </div>
+      </mat-expansion-panel>
+    </div>
+
+    <div class="chat-content-area">
+      <div id="chat" class="messages">
+        @if (chatService.loading()) {
+        <div class="message barista">
+          <div class="message-icon-container">
+            <mat-icon class="barista-icon">coffee</mat-icon>
+          </div>
+          <div class="message-text-container typing-indicator">
+            <div class="typing typing-1"></div>
+            <div class="typing typing-2"></div>
+            <div class="typing typing-3"></div>
+          </div>
+        </div>
+        } @for (entry of chatService.history(); track entry; let i = $index) {
+        @if (entry.role === 'user') {
+        <div class="message user">
+          <div class="message-text-container">
+            {{ entry.text }}
+            @if (entry.media && entry.media.base64Data) {
+            <img [src]="'data:image/png;base64, ' + entry.media.base64Data" alt="User media" />
+            }
+          </div>
+        </div>
+        } @if (entry.role === 'agent') {
+        <div class="message barista">
+          <div class="message-icon-container">
+            <mat-icon class="barista-icon">coffee</mat-icon>
+          </div>
+          <div class="message-text-container">
+            {{ entry.text }}
+          </div>
+        </div>
+        } }
+      </div>
+    </div>
+    <div class="suggestions-container">
+      <div class="quick-replies">
+        @for (response of chatService.suggestedResponses(); track response; let
+        index = $index) {
+        <button
+          mat-stroked-button
+          class="quick-reply-chip"
+          (click)="ask(response)"
+        >
+          <mat-icon fontSet="material-symbols-outlined"
+            >prompt_suggestion</mat-icon
+          >{{ response }}
+        </button>
+        }
+      </div>
+    </div>
+    <form class="chat-input-bar" (ngSubmit)="ask()">
+      @if (chatService.error()) {
+      <pre class="error-message">{{ chatService.error()?.text }}</pre>
+      }
+
+      <mat-form-field appearance="outline" class="chat-input-field">
+        <input
+          matInput
+          (keypress)="keyPress($event)"
+          [formControl]="chatFormControl"
+          placeholder="Anything else?"
+        />
+        @if (mediaStorageService.media()) {
+          <div class="image-preview-container">
+            <img
+              [src]="'data:image/png;base64, ' + mediaStorageService.media()?.base64Data"
+              class="media-preview-in-bar"
+              alt="Preview"
+            />
+            <button
+              mat-icon-button
+              class="remove-preview-button"
+              type="button"
+              (click)="this.mediaStorageService.clearMedia()" 
+              matTooltip="Remove image">
+              <mat-icon>close</mat-icon>
+            </button>
+          </div>
+          }
+      </mat-form-field>
+
+      <button
+      mat-icon-button
+      class="action-button add-btn"
+      type="button"
+      (click)="openPhotoSelectionDialog()"  [disabled]="chatService.loading()"
+      matTooltip="Attach a photo"
+    >
+      <mat-icon>add_photo_alternate</mat-icon> 
+    </button>
+
+      <button
+        mat-icon-button
+        class="action-button send-btn"
+        type="submit"
+        [disabled]="chatService.loading() || !chatFormControl.value"
+        matTooltip="Send message"
+      >
+        <mat-icon>chevron_right</mat-icon>
+      </button>
+    </form>
+  </div>
+</div>
