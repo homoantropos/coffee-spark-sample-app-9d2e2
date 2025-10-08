@@ -23,6 +23,9 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterOutlet } from '@angular/router';
 import { LoginComponent } from './login/login.component';
 import { environment } from '../environments/environment';
+import { AI, getAI, getGenerativeModel, GoogleAIBackend } from '@angular/fire/ai'
+import { initializeApp } from '@angular/fire/app'
+import { AiButtonComponent } from './ai-button/ai-button.component';
 
 @Component({
   selector: 'app-root',
@@ -36,6 +39,7 @@ import { environment } from '../environments/environment';
     MatToolbarModule,
     MatTooltipModule,
     LoginComponent,
+    AiButtonComponent
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
@@ -43,4 +47,24 @@ import { environment } from '../environments/environment';
 export class AppComponent {
   readonly viewCodeLink = environment.viewCodeLink;
   readonly viewCodeMessage = environment.viewCodeMessage;
+
+  fbApp;
+
+  constructor() {
+    this.fbApp = initializeApp(environment.firebase);
+
+    const ai = getAI(this.fbApp, { backend: new GoogleAIBackend() });
+
+    const model = getGenerativeModel(ai, { model: "gemini-2.5-flash-lite" });
+
+    const prompt = "Write a story about a magic backpack."
+
+    model.generateContent(prompt).then(result => {
+      const response = result.response;
+
+      const text = response.text();
+
+      console.log('TEXT: ', text);
+    });
+  }
 }

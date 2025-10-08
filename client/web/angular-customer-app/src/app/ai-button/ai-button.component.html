@@ -1,0 +1,6 @@
+<div class="ai-button-container">
+  <button class="ai-button" (click)="toggleBody()">AI</button>
+  <div class="ai-body" [class.show]="isBodyVisible">
+    <input type="file" accept="image/*" (change)="onFileSelected($event)">
+  </div>
+</div>
